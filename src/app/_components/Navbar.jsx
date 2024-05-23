@@ -5,18 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { MenuIcon } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MobileSideBar } from "./mobile-side-bar";
+import { useAuth } from "@/hooks/use-auth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function Navbar() {
+  const { user, initialize } = useAuth();
   const [isMounted, setIsMounted] = useState(false);
+
   const Menu = [
     {
       id: 1,
@@ -53,6 +50,9 @@ function Navbar() {
   ];
 
   useEffect(() => {
+    initialize();
+  }, []);
+  useEffect(() => {
     setIsMounted(true);
   });
 
@@ -84,20 +84,31 @@ function Navbar() {
           </div>
         ))}
       </div>
-      <div className="flex items-center justify-between gap-x-8 relative">
-        <div>
-          <Link href={"/Signup"}>
-            <Button>SignUp</Button>
-          </Link>
+      {!user && (
+        <div className="flex items-center justify-between gap-x-8 relative">
+          <div>
+            <Link href={"/Signup"}>
+              <Button>SignUp</Button>
+            </Link>
+          </div>
+          <div>
+            <Link href={"/Signin"}>
+              <Button variant="secondary" className="text-white">
+                SignIn
+              </Button>
+            </Link>
+          </div>
         </div>
-        <div>
-          <Link href={"/Signin"}>
-            <Button variant="secondary" className="text-white">
-              SignIn
-            </Button>
-          </Link>
+      )}
+      {user && (
+        <div className="flex items-center justify-between gap-x-8 relative">
+          <div>
+            <Avatar className="flex justify-center items-center font-bold">
+              <AvatarFallback>{user.patient_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            </Avatar>
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }
