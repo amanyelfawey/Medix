@@ -5,32 +5,26 @@ import Services from "@/app/_components/Services";
 import ContactUs from "./_components/ContactUs";
 import OurDr from "./_components/OurDr";
 
-
-
 export default function Home() {
   return (
     <div>
-     
-{/* {Hero Section} */}
-<Hero/>
+      {/* {Hero Section} */}
+      <Hero />
 
-{/* Search bar + Categories */}
-<CategorySearch/>
+      {/* Search bar + Categories */}
+      <CategorySearch />
 
-{/* Doctors */}
-<OurDr/>
+      {/* Doctors */}
+      <OurDr />
 
-{/* Services */}
-<Services/>
+      {/* Services */}
+      <Services />
 
-{/* About Us */}
-<About/>
+      {/* About Us */}
+      <About />
 
-{/* ContactUs */}
-<ContactUs/>
-
+      {/* ContactUs */}
+      <ContactUs />
     </div>
-  )
+  );
 }
-
-

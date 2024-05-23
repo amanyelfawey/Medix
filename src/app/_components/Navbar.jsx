@@ -58,8 +58,8 @@ function Navbar() {
 
   if (!isMounted) return null;
   return (
-    <nav className="flex h-[100px] justify-between p-4">
-      <div className="w-[200px] h-[200px] hidden lg:block">
+    <nav className="flex h-[100px] justify-between p-4 fixed top-0 left-0 right-0 bg-white z-20 mb-16">
+      <div className="w-[150px] h-[150px] hidden lg:block">
         <Image alt="Logo" src="/Logo.png" width={"200"} height={"200"} />
       </div>
       <div className="w-8 h-8 flex items-center justify-center md:hidden">
@@ -89,7 +89,9 @@ function Navbar() {
           <Button>SignUp</Button>
         </div>
         <div>
-          <Button>SignUp</Button>
+          <Button variant="secondary" className="text-white">
+            SignIn
+          </Button>
         </div>
       </div>
     </nav>
