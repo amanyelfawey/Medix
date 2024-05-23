@@ -1,176 +1,99 @@
+"use client";
 
-import { Button } from '@/components/ui/button';
-import Image from 'next/image'
-import Link from 'next/link';
-import React from 'react'
-import { useAuth } from '../context/AuthContext';
-
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { MenuIcon } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { MobileSideBar } from "./mobile-side-bar";
 
 function Navbar() {
-    const Menu =[
+  const [isMounted, setIsMounted] = useState(false);
+  const Menu = [
     {
-        id:1,
-        name:'Home',
-        path:'/#home'
+      id: 1,
+      name: "Home",
+      path: "/#home",
     },
     {
-        id:2,
-        
-        name:'Our Departments',
-        path:'/#Dep'
+      id: 2,
+
+      name: "Departments",
+      path: "/#Dep",
     },
     {
-        id:3,
-        
-        name:'Our Doctors',
-        path:'/#OurDr'
+      id: 3,
+
+      name: "Doctors",
+      path: "/#OurDr",
     },
     {
-        id:4,
-        name:'Services',
-        path:'/#services'
+      id: 4,
+      name: "Services",
+      path: "/#services",
     },
     {
-        id:5,
-        
-        name:'About Us',
-        path:'/#about'
+      id: 5,
+      name: "About",
+      path: "/#about",
     },
     {
-        id:6,
-        name:'Contact Us',
-        path:'/#contact'
-    }
-]
+      id: 6,
+      name: "Contact",
+      path: "/#contact",
+    },
+  ];
+
+  useEffect(() => {
+    setIsMounted(true);
+  });
+
+  if (!isMounted) return null;
   return (
-    <div className='container flex items-center text-center justify-center  pl-8 pr-8 p-2 bg-gray-100  bg-opacity-25 shadow-lg rounded-lg ' id="header">
-        <div className='container flex items-center gap-10'>
-        <Link href={"http://localhost:3000"}><Image src='/Logo.png' alt='logo'
-        width={160} height={80}/></Link>
-        <ul className='md:flex gap-10 hidden pl-20' >
-        {Menu.map((item,index)=>(
-            <Link href={item.path}>
-                <li className=' text-primary  hover:text-secondary cursor-pointer hover:scale-105 transition-all ease-in-out text-lg text-center
-                '>{item.name}</li>
-            
-            </Link>
-
+    <nav className="flex h-[100px] justify-between p-4">
+      <div className="w-[200px] h-[200px] hidden lg:block">
+        <Image alt="Logo" src="/Logo.png" width={"200"} height={"200"} />
+      </div>
+      <div className="w-8 h-8 flex items-center justify-center md:hidden">
+        <Sheet>
+          <SheetTrigger>
+            <Button size={"icon"} variant="ghost" className="p-2">
+              <MenuIcon className="w-8 h-8" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left">
+            <MobileSideBar Menu={Menu} />
+          </SheetContent>
+        </Sheet>
+      </div>
+      <div className="hidden md:flex  gap-x-6 lg:gap-x-12 justify-between items-center h-full relative -top-2">
+        {Menu.map((item, i) => (
+          <div
+            key={i}
+            className="flex justify-center items-center text-[#2A99A2] font-bold text-lg"
+          >
+            <Link href={item.path}>{item.name}</Link>
+          </div>
         ))}
-        </ul>
+      </div>
+      <div className="flex items-center justify-between gap-x-8 relative -top-2">
+        <div>
+          <Button>SignUp</Button>
         </div>
-        <Link href={"http://localhost:3000/Signup"}><Button className='rounded text-white hover:bg-secondary' >Sign Up</Button></Link>
-        {/* <p className='px-3 text-primary'> | </p> */}
-
-        <Link href={"http://localhost:3000/Login"}><Button className='rounded text-white bg-secondary hover:bg-primary mx-3' >Log In</Button></Link>
-
-        
-    </div>
-    
-  )
+        <div>
+          <Button>SignUp</Button>
+        </div>
+      </div>
+    </nav>
+  );
 }
 
 export default Navbar;
-
-
-// import { Button } from '@/components/ui/button';
-// import Image from 'next/image';
-// import Link from 'next/link';
-// import React from 'react';
-// import { useAuth } from '../context/AuthContext';
-
-// function Navbar() {
-//   const { user, logout } = useAuth();
-
-//   const Menu = [
-//     { id: 1, name: 'Home', path: '/#home' },
-//     { id: 2, name: 'Our Departments', path: '/#Dep' },
-//     { id: 3, name: 'Our Doctors', path: '/#OurDr' },
-//     { id: 4, name: 'Services', path: '/#services' },
-//     { id: 5, name: 'About Us', path: '/#about' },
-//     { id: 6, name: 'Contact Us', path: '/#contact' }
-//   ];
-
-//   return (
-//     <div className='container flex items-center text-center justify-center pl-8 pr-8 p-2 bg-gray-100 bg-opacity-25 shadow-lg rounded-lg' id="header">
-//       <div className='container flex items-center gap-10'>
-//         <Link href="/"><Image src='/Logo.png' alt='logo' width={160} height={80} /></Link>
-//         <ul className='md:flex gap-10 hidden pl-20'>
-//           {Menu.map((item) => (
-//             <Link href={item.path} key={item.id}>
-//               <li className='text-primary hover:text-secondary cursor-pointer hover:scale-105 transition-all ease-in-out text-lg text-center'>
-//                 {item.name}
-//               </li>
-//             </Link>
-//           ))}
-//         </ul>
-//       </div>
-//       {user ? (
-//         <>
-//           <Link href="/UserProfile"><Button className='rounded text-white hover:bg-secondary'>Profile</Button></Link>
-//           <Button onClick={logout} className='rounded text-white bg-secondary hover:bg-primary mx-3'>Logout</Button>
-//         </>
-//       ) : (
-//         <>
-//           <Link href="/Signup"><Button className='rounded text-white hover:bg-secondary'>Sign Up</Button></Link>
-//           <Link href="/Login"><Button className='rounded text-white bg-secondary hover:bg-primary mx-3'>Log In</Button></Link>
-//         </>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Navbar;
-
-
-
-// import { Button } from '@/components/ui/button';
-// import Image from 'next/image';
-// import Link from 'next/link';
-// import React from 'react';
-
-
-
-// function Navbar() {
-
-
-
-//   const Menu = [
-//     { id: 1, name: 'Home', path: '/#home' },
-//     { id: 2, name: 'Our Departments', path: '/#Dep' },
-//     { id: 3, name: 'Our Doctors', path: '/#OurDr' },
-//     { id: 4, name: 'Services', path: '/#services' },
-//     { id: 5, name: 'About Us', path: '/#about' },
-//     { id: 6, name: 'Contact Us', path: '/#contact' }
-//   ];
-
-//   return (
-//     <div className='container flex items-center text-center justify-center pl-8 pr-8 p-2 bg-gray-100 bg-opacity-25 shadow-lg rounded-lg' id="header">
-//       <div className='container flex items-center gap-10'>
-//         <Link href="/"><Image src='/Logo.png' alt='logo' width={160} height={80} /></Link>
-//         <ul className='md:flex gap-10 hidden pl-20'>
-//           {Menu.map((item) => (
-//             <Link href={item.path} key={item.id}>
-//               <li className='text-primary hover:text-secondary cursor-pointer hover:scale-105 transition-all ease-in-out text-lg text-center'>
-//                 {item.name}
-//               </li>
-//             </Link>
-//           ))}
-//         </ul>
-//       </div>
-//       {user ? (
-//         <>
-//           <Link href="/UserProfile"><Button className='rounded text-white hover:bg-secondary'>Profile</Button></Link>
-//           <Button onClick={logout} className='rounded text-white bg-secondary hover:bg-primary mx-3'>Logout</Button>
-//         </>
-//       ) : (
-//         <>
-//           <Link href="/Signup"><Button className='rounded text-white hover:bg-secondary'>Sign Up</Button></Link>
-//           <Link href="/Login"><Button className='rounded text-white bg-secondary hover:bg-primary mx-3'>Log In</Button></Link>
-//           <Link href="/"><Button className='rounded text-white bg-secondary hover:bg-primary mx-3'>Log In</Button></Link>
-//         </>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Navbar;
