@@ -58,7 +58,7 @@ function Navbar() {
 
   if (!isMounted) return null;
   return (
-    <nav className="flex h-[100px] justify-between p-4 fixed top-0 left-0 right-0 bg-white z-20 mb-16">
+    <nav className="flex h-[70px] justify-between p-4 fixed top-0 left-0 right-0 bg-white z-20 mb-16">
       <div className="w-[150px] h-[150px] hidden lg:block">
         <Image alt="Logo" src="/Logo.png" width={"200"} height={"200"} />
       </div>
@@ -74,7 +74,7 @@ function Navbar() {
           </SheetContent>
         </Sheet>
       </div>
-      <div className="hidden md:flex  gap-x-6 lg:gap-x-12 justify-between items-center h-full relative -top-2">
+      <div className="hidden md:flex  gap-x-6 lg:gap-x-12 justify-between items-center h-full relative ">
         {Menu.map((item, i) => (
           <div
             key={i}
@@ -84,14 +84,18 @@ function Navbar() {
           </div>
         ))}
       </div>
-      <div className="flex items-center justify-between gap-x-8 relative -top-2">
+      <div className="flex items-center justify-between gap-x-8 relative">
         <div>
-          <Button>SignUp</Button>
+          <Link href={"/Signup"}>
+            <Button>SignUp</Button>
+          </Link>
         </div>
         <div>
-          <Button variant="secondary" className="text-white">
-            SignIn
-          </Button>
+          <Link href={"/Signin"}>
+            <Button variant="secondary" className="text-white">
+              SignIn
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>
