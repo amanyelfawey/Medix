@@ -22,7 +22,7 @@ function Navbar() {
         id:3,
         
         name:'Our Doctors',
-        path:'/#OurDr'
+        path:'http://localhost:3000/FindDoctors'
     },
     {
         id:4,
@@ -34,12 +34,8 @@ function Navbar() {
         
         name:'About Us',
         path:'/#about'
-    },
-    {
-        id:6,
-        name:'Contact Us',
-        path:'/#contact'
     }
+
 ]
   return (
     <div className='container flex items-center text-center justify-center  pl-8 pr-8 p-2 bg-gray-100  bg-opacity-25 shadow-lg rounded-lg ' id="header">

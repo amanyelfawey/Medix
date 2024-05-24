@@ -149,7 +149,7 @@ export default function Services() {
               </div>
               <div className="pt-5 text-base font-semibold leading-7">
                 <p>
-                  <Link href="#" className="secondary transition-all duration-300 text-primary group-hover:text-secondary">
+                  <Link href={"http://localhost:3000/FindDoctors"} className="secondary transition-all duration-300 text-primary group-hover:text-secondary">
                     Learn More &rarr;
                   </Link>
                 </p>
@@ -179,7 +179,7 @@ export default function Services() {
               </div>
               <div className="pt-5 text-base font-semibold leading-7">
                 <p>
-                  <Link href="#" className="secondary transition-all duration-300 text-primary group-hover:text-secondary">
+                  <Link href={"http://localhost:3000/FindDoctors"} className="secondary transition-all duration-300 text-primary group-hover:text-secondary">
                     Learn More &rarr;
                   </Link>
                 </p>
@@ -210,7 +210,7 @@ A detailed health report helps the Ai model to diagnose you better.</p>
               </div>
               <div className="pt-5 text-base font-semibold leading-7">
                 <p>
-                  <Link href="#" className="secondary transition-all duration-300 text-primary group-hover:text-secondary">
+                  <Link href={"http://localhost:3000/MedixAI"} className="secondary transition-all duration-300 text-primary group-hover:text-secondary">
                     Learn More &rarr;
                   </Link>
                 </p>
@@ -218,20 +218,7 @@ A detailed health report helps the Ai model to diagnose you better.</p>
             </div>
           </div>
         </div>
-
-
-
-        
       </div>
-
-
-
-
-
-      
-  
-      {/* Add additional responsive divs here */}
-  
     </div>
   </div>
 </section>
