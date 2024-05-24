@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
@@ -26,10 +25,12 @@ import { Loader } from "lucide-react";
 import { createFormData } from "@/lib/created-form-data";
 import Cookies from "js-cookie";
 import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const { setUser } = useAuth();
+  const router = useRouter();
 
   const formSchema = z.object({
     email: z.string().email(),
@@ -58,13 +59,29 @@ export default function Login() {
         }
       );
       toast.success("Successfully logged in");
-      const id = res.data.profile[0].doctor_id || res.data.profile[0].patient_id;
-      const profile = res.data.profile[0];
-      Cookies.set("id", id, { expires: 14, path: "/" });
-      Cookies.set("profile", JSON.stringify(profile), { expires: 14, path: "/" });
-      setUser(profile);
 
-      console.log(res.data);
+      const profile = res.data.profile[0];
+      const profileType = profile.doctor_id ? "doctor" : "patient";
+      const id = profileType === "doctor" ? profile.doctor_id : profile.patient_id;
+      const phoneKey = `${profileType}_phone`;
+
+      // Determine if the profile is complete
+      const profileCompleted = profile[phoneKey] !== null;
+      const userProfile = { ...profile, profileCompleted };
+
+      setUser(userProfile);
+
+      Cookies.set("id", id);
+      Cookies.set("profile", JSON.stringify(userProfile));
+      Cookies.set("profileCompleted", profileCompleted);
+
+      if (!profileCompleted) {
+        router.push("/profile");
+        return;
+      }
+
+      router.push("/dashboard");
+      router.refresh();
     } catch (e) {
       if (e?.response?.status === 401) {
         toast.error("Invalid email or password");

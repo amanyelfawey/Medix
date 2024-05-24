@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MobileSideBar } from "./mobile-side-bar";
 import { useAuth } from "@/hooks/use-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserIcon } from "@/components/ui/user-icon";
 
 function Navbar() {
   const { user, initialize } = useAuth();
@@ -100,15 +101,7 @@ function Navbar() {
           </div>
         </div>
       )}
-      {user && (
-        <div className="flex items-center justify-between gap-x-8 relative">
-          <div>
-            <Avatar className="flex justify-center items-center font-bold">
-              <AvatarFallback>{user.patient_name.slice(0, 2).toUpperCase()}</AvatarFallback>
-            </Avatar>
-          </div>
-        </div>
-      )}
+      {user && <UserIcon user={user} />}
     </nav>
   );
 }
