@@ -24,13 +24,17 @@ import Cookies from "js-cookie";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { UserForm } from "./_components/user-form";
+import { DoctorForm } from "./_components/doctor-form";
 
 const ProfilePage = () => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { user, id } = useAuth();
+  const initializeAuth = useAuth((state) => state.initialize);
+  const { setUser, id, user } = useAuth.getState();
+
   const [profileType, setProfileType] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -41,7 +45,7 @@ const ProfilePage = () => {
     phone: z.string().min(11, { message: "Phone number must be valid" }),
     dateOfBirth: z.coerce.date(),
     gender: z.enum(["male", "female"], { message: "Please select your gender" }),
-    image: z.string().min(1, { message: "Please upload a profile image" }),
+    image: z.any(),
   });
 
   const form = useForm({
@@ -52,17 +56,21 @@ const ProfilePage = () => {
       phone: "",
       dateOfBirth: "",
       gender: "",
-      image: "",
+      image: null,
     },
   });
 
   useEffect(() => {
-    if (user) {
-      setProfileType(user.profileType);
-    }
+    initializeAuth();
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    setProfileType(user.profileType);
   }, [user]);
 
   useEffect(() => {
+    if (!profileType) return;
     if (profileType === "Doctor") {
       setName(user.doctor_name);
       setEmail(user.doctor_email);
@@ -79,11 +87,11 @@ const ProfilePage = () => {
       phone: "",
       dateOfBirth: "",
       gender: "",
-      image: "",
+      image: null,
     });
   }, [name, email, form]);
 
-  async function onSubmit(values) {
+  async function onUserSubmit(values) {
     setIsLoading(true);
     const formData = new FormData();
     formData.append("Name", values.name);
@@ -91,7 +99,7 @@ const ProfilePage = () => {
     formData.append("Email", values.email);
     formData.append("Date_Of_birth", new Date(values.dateOfBirth).toISOString());
     formData.append("Gender", values.gender);
-    formData.append("image", values.image);
+    formData.append("image", values.image[0]);
 
     try {
       console.log("Form Data:", id);
@@ -101,9 +109,52 @@ const ProfilePage = () => {
           Accept: "*/*",
         },
       });
+
       console.log("Response:", response.data);
       toast.success("Profile updated successfully.");
-      return response.data;
+      const updatedUser = {
+        ...user,
+        ...response.data,
+      };
+
+      setUser(updatedUser);
+      Cookies.set("profileCompleted", true);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function onDoctorSubmit(values) {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append("Name", values.name);
+    formData.append("phone", values.phone);
+    formData.append("Email", values.email);
+    formData.append("Date_Of_birth", new Date(values.dateOfBirth).toISOString());
+    formData.append("Gender", values.gender);
+    formData.append("image", values.image[0]);
+
+    try {
+      console.log("Form Data:", id);
+      const response = await axios.put(`http://154.38.186.138:5000/api/Doctors/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "*/*",
+        },
+      });
+
+      console.log("Response:", response.data);
+      toast.success("Profile updated successfully.");
+      const updatedUser = {
+        ...user,
+        ...response.data,
+      };
+
+      setUser(updatedUser);
+      Cookies.set("profileCompleted", true);
     } catch (error) {
       console.error("Error:", error);
       toast.error("An error occurred. Please try again.");
@@ -125,147 +176,11 @@ const ProfilePage = () => {
           <p className="text-muted-foreground text-center text-sm my-2">
             Please complete your profile to get started.
           </p>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        readOnly
-                        className="bg-[#D4EDED] read-only:cursor-not-allowed focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
-                        placeholder="Name"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>{`You can't change your name.`}</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        readOnly
-                        className="bg-[#D4EDED] read-only:cursor-not-allowed focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
-                        placeholder="Email"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>{`
-                    You can't change your email address.
-                    `}</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="bg-[#D4EDED] focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
-                        placeholder="Phone"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>Please enter your phone number.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="dateOfBirth"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date of Birth</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        className="bg-[#D4EDED] focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
-                        placeholder="Date of Birth"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>Please enter your date of birth.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gender</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-1"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value={"male"} />
-                          </FormControl>
-                          <FormLabel className="font-normal">Male</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value={"female"} />
-                          </FormControl>
-                          <FormLabel className="font-normal">Female</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormDescription>Please select your gender.</FormDescription>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="image"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <div>
-                        <p className="mb-3">Profile Image</p>
-                        <div className="w-full bg-[#2A99A2]/20 text-gray-600 font-bold cursor-pointer rounded-lg h-24 flex justify-center items-center">
-                          <UploadCloudIcon className="w-12 h-12" />
-                        </div>
-                      </div>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="bg-[#D4EDED] hidden file:bg-red-500 file:text-red-500 focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
-                          placeholder="Gender"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormLabel>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button disabled={isLoading} type="submit" className="w-full text-xl">
-                {!isLoading ? "Update Profile" : <Loader className="w-4 h-4 animate-spin" />}
-              </Button>
-            </form>
-          </Form>
+          {profileType && profileType === "Patient" ? (
+            <UserForm form={form} onSubmit={onUserSubmit} isLoading={isLoading} />
+          ) : (
+            <DoctorForm form={form} onSubmit={onDoctorSubmit} isLoading={isLoading} />
+          )}
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 md:w-1/4"></span>
             <Link href={"/Signup"} className="text-xs text-gray-500 ">

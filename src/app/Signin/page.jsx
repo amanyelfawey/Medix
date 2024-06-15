@@ -61,11 +61,11 @@ export default function Login() {
       toast.success("Successfully logged in");
 
       const profile = res.data.profile[0];
+      console.log(profile);
       const profileType = profile.doctor_id ? "doctor" : "patient";
       const id = profileType === "doctor" ? profile.doctor_id : profile.patient_id;
       const phoneKey = `${profileType}_phone`;
 
-      // Determine if the profile is complete
       const profileCompleted = profile[phoneKey] !== null;
       const userProfile = { ...profile, profileCompleted };
 

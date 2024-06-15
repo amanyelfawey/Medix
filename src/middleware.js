@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import Cookies from "js-cookie";
 
 export async function middleware(req) {
   const userId = req.cookies.get("id");
-  const isProfileCompleted = req.cookies.get("profileCompleted");
+  const userProfile = req.cookies.get("profile");
+  const profileCompleted = req.cookies.get("profileCompleted").value === "true" ? true : false;
 
   // Check if the request is for a protected route
   const protectedRoutes = ["/dashboard", "/profile"];
@@ -13,11 +15,14 @@ export async function middleware(req) {
     return NextResponse.redirect(new URL("/Signin", req.url));
   }
 
+  // If user is logged in and their profile is complete, redirect to /dashboard instead of /profile
+  if (userId && profileCompleted && req.nextUrl.pathname === "/profile") {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
   // If user is logged in but their profile is not complete, redirect to /profile
-  if (userId && isProfileCompleted.value != "true") {
-    if (req.nextUrl.pathname !== "/profile") {
-      return NextResponse.redirect(new URL("/profile", req.url));
-    }
+  if (userId && !profileCompleted && req.nextUrl.pathname !== "/profile") {
+    return NextResponse.redirect(new URL("/profile", req.url));
   }
 
   return NextResponse.next();

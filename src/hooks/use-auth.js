@@ -1,4 +1,3 @@
-// store/useAuth.js
 import { create } from "zustand";
 import Cookies from "js-cookie";
 
@@ -13,26 +12,35 @@ export const useAuth = create((set) => ({
     if (userId && userProfile) {
       const profile = JSON.parse(userProfile);
 
-      // Determine if the profile is completed based on profile type
       const profileCompleted =
         profile.profileType === "Doctor"
           ? profile.doctor_phone !== null
           : profile.patient_phone !== null;
 
-      set({ user: { ...profile, profileCompleted } });
+      set({
+        user: { ...profile, profileCompleted },
+        id: profile.profileType === "Patient" ? profile.patient_id : profile.doctor_id,
+      });
     }
   },
 
   setUser: (user) => {
     const profileCompleted =
-      user.type === "patient" ? user.patient_phone !== null : user.doctor_phone !== null;
+      user.profileType === "Patient" ? user.patient_phone !== null : user.doctor_phone !== null;
 
-    set({ user: { ...user, profileCompleted } });
-    set({ id: user.type === "patient" ? user.patient_id : user.doctor_id });
+    set((state) => ({
+      ...state,
+      user: { ...user, profileCompleted },
+      id: user.profileType === "Patient" ? user.patient_id : user.doctor_id,
+    }));
+
+    // Save user data to cookies
+    Cookies.set("id", user.profileType === "Patient" ? user.patient_id : user.doctor_id);
+    Cookies.set("profile", JSON.stringify(user));
   },
 
   logout: () => {
-    set({ user: null });
+    set({ user: null, id: null });
     Cookies.remove("id");
     Cookies.remove("profile");
   },
