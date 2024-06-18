@@ -1,9 +1,21 @@
+// middleware.js
+
 import { NextResponse } from "next/server";
-import Cookies from "js-cookie";
 
 export async function middleware(req) {
   const userId = req.cookies.get("id");
   const userProfile = req.cookies.get("profile");
+
+  // Check if user is logged in
+  const isLoggedIn = userId && userProfile;
+
+  // Routes for signing in and signing up
+  const authRoutes = ["/Signin", "/Signup"];
+
+  // Prevent logged-in users from accessing sign-in or sign-up pages
+  if (isLoggedIn && authRoutes.some((route) => req.nextUrl.pathname.startsWith(route))) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
 
   if (!userId || !userProfile) {
     return NextResponse.redirect(new URL("/Signin", req.url));
@@ -17,6 +29,7 @@ export async function middleware(req) {
 
   // If trying to access any protected route and the user is not logged in, redirect to /Signin
   if (isProtectedRoute && !userId) {
+    console.log("User is not logged in, redirecting to /Signin");
     return NextResponse.redirect(new URL("/Signin", req.url));
   }
 
@@ -34,5 +47,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/FindDoctors", "/profile"],
+  matcher: ["/FindDoctors", "/profile", "/Signin", "/Signup"],
 };
