@@ -31,7 +31,7 @@ function Navbar() {
       id: 3,
 
       name: "Doctors",
-      path: "/#OurDr",
+      path: "/FindDoctors",
     },
     {
       id: 4,

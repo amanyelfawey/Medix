@@ -4,6 +4,11 @@ import Cookies from "js-cookie";
 export async function middleware(req) {
   const userId = req.cookies.get("id");
   const userProfile = req.cookies.get("profile");
+
+  if (!userId || !userProfile) {
+    return NextResponse.redirect(new URL("/Signin", req.url));
+  }
+
   const profileCompleted = req.cookies.get("profileCompleted").value === "true" ? true : false;
 
   // Check if the request is for a protected route
