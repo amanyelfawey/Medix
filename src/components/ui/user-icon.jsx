@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 export const UserIcon = ({ user }) => {
   const { logout } = useAuth();
   const router = useRouter();
+
   const handleLogout = async () => {
     await logout();
     router.push("/");

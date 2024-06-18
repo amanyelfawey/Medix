@@ -12,7 +12,7 @@ export async function middleware(req) {
   const profileCompleted = req.cookies.get("profileCompleted").value === "true" ? true : false;
 
   // Check if the request is for a protected route
-  const protectedRoutes = ["/dashboard", "/profile"];
+  const protectedRoutes = ["/FindDoctors", "/profile"];
   const isProtectedRoute = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route));
 
   // If trying to access any protected route and the user is not logged in, redirect to /Signin
@@ -22,7 +22,7 @@ export async function middleware(req) {
 
   // If user is logged in and their profile is complete, redirect to /dashboard instead of /profile
   if (userId && profileCompleted && req.nextUrl.pathname === "/profile") {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/FindDoctors", req.url));
   }
 
   // If user is logged in but their profile is not complete, redirect to /profile
@@ -34,5 +34,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/profile"],
+  matcher: ["/FindDoctors", "/profile"],
 };

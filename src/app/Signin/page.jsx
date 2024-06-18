@@ -80,7 +80,7 @@ export default function Login() {
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/FindDoctors");
       router.refresh();
     } catch (e) {
       if (e?.response?.status === 401) {
