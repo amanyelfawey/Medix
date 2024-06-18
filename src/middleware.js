@@ -13,33 +13,27 @@ export async function middleware(req) {
   const authRoutes = ["/Signin", "/Signup"];
 
   // Prevent logged-in users from accessing sign-in or sign-up pages
-  if (isLoggedIn && authRoutes.some((route) => req.nextUrl.pathname.startsWith(route))) {
+  if (isLoggedIn && authRoutes.includes(req.nextUrl.pathname)) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (!userId || !userProfile) {
+  if (!isLoggedIn && authRoutes.includes(req.nextUrl.pathname)) {
+    return NextResponse.next();
+  }
+
+  if (!isLoggedIn) {
     return NextResponse.redirect(new URL("/Signin", req.url));
   }
 
-  const profileCompleted = req.cookies.get("profileCompleted").value === "true" ? true : false;
+  const profileCompleted = req.cookies.get("profileCompleted")?.value === "true";
 
-  // Check if the request is for a protected route
-  const protectedRoutes = ["/FindDoctors", "/profile"];
-  const isProtectedRoute = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route));
-
-  // If trying to access any protected route and the user is not logged in, redirect to /Signin
-  if (isProtectedRoute && !userId) {
-    console.log("User is not logged in, redirecting to /Signin");
-    return NextResponse.redirect(new URL("/Signin", req.url));
-  }
-
-  // If user is logged in and their profile is complete, redirect to /dashboard instead of /profile
-  if (userId && profileCompleted && req.nextUrl.pathname === "/profile") {
+  // If user is logged in and their profile is complete, redirect to /FindDoctors instead of /profile
+  if (isLoggedIn && profileCompleted && req.nextUrl.pathname === "/profile") {
     return NextResponse.redirect(new URL("/FindDoctors", req.url));
   }
 
   // If user is logged in but their profile is not complete, redirect to /profile
-  if (userId && !profileCompleted && req.nextUrl.pathname !== "/profile") {
+  if (isLoggedIn && !profileCompleted && req.nextUrl.pathname !== "/profile") {
     return NextResponse.redirect(new URL("/profile", req.url));
   }
 
