@@ -8,13 +8,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
 
 export const UserIcon = ({ user }) => {
+  const { logout } = useAuth();
+  const router = useRouter();
+  const handleLogout = async () => {
+    await logout();
+    router.push("/");
+  };
+
   return (
     <>
       <div className="flex items-center justify-between gap-x-8 relative">
         <div>
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger>
               <Avatar className="flex justify-center items-center font-bold">
                 <AvatarFallback>
@@ -25,10 +34,19 @@ export const UserIcon = ({ user }) => {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel className="text-lg">Account settings</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-sm">Account settings</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-lg">
+              <DropdownMenuItem className="text-sm">
                 <Link href="/profile">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  handleLogout();
+                }}
+                className="text-sm"
+              >
+                <Link href="/profile">Logout</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
