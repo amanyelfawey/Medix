@@ -9,4 +9,5 @@ export default function DentistsPage() {
       <ul className="text-primary text-2xl "></ul>
     </div>
   );
+  );
 }

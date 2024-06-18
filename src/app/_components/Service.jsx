@@ -1,4 +1,5 @@
 import { Brain, CalendarCheck, User, Users2 } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const Service = () => {
@@ -42,14 +43,14 @@ const Service = () => {
                 <p className="leading-relaxed text-lg text-gray-100 dark:text-gray-300 pt-2">
                 Book your appointment today and take the first step towards better health 
                 </p>
-                <a href="#" className="mt-3 text-gray-100 dark:text-white hover:text-secondary 
+                <Link href={"http://localhost:3000/MedixAI"} className="mt-3 text-gray-100 dark:text-white hover:text-secondary 
                 hover:translate-x-10 transition-all
                 inline-flex items-center text-lg">Learn More
                     <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="2" className="w-4 h-4 ml-2" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"></path>
                     </svg>
-                </a>
+                </Link>
             </div>
         </div>
     </div>
@@ -109,14 +110,14 @@ const Service = () => {
                 Add a medical report.
 A detailed health report helps the Ai model to diagnose you better.
                 </p>
-                <a href="#" className="mt-3 text-gray-100 dark:text-white hover:text-secondary 
+                <Link href={"http://localhost:3000/MedixAI"} className="mt-3 text-gray-100 dark:text-white hover:text-secondary 
                 hover:translate-x-10 transition-all
                 inline-flex items-center text-lg">Learn More
                     <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="2" className="w-4 h-4 ml-2" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"></path>
                     </svg>
-                </a>
+                </Link>
             </div>
         </div>
     </div>

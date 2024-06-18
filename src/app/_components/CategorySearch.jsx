@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 function CategorySearch() {
   return (
-    <div className='mb-10 mt-10 items-center flex flex-col gap-3' id="Dep">
+    <div className='mb-10 mt-10 items-center flex flex-col gap-3' id="dep">
         {/* <h2 className=' font-bold text-4xl tracking-wide'>Search <span className='text-primary'>Doctors</span></h2>
         <h2 className=' text-gray-500 text-xl'>Search Your Doctor and Book Appointment</h2>
 

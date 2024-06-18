@@ -116,24 +116,23 @@
 //   );
 // }
 
-
 "use client";
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function UserProfile() {
   const [user, setUser] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
     isDoctor: false,
-    name: '',
-    phone: '',
-    date_of_birth: '',
-    gender: '',
+    name: "",
+    phone: "",
+    date_of_birth: "",
+    gender: "",
     image: null,
   });
 
@@ -143,14 +142,14 @@ export default function UserProfile() {
     // Simulating fetching initial user data from the server
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('http://154.38.186.138:5000/api/Patients/{id}', {
+        const { data } = await axios.get("http://154.38.186.138:5000/api/Patients/{id}", {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
         setUser(data);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
     fetchData();
@@ -158,7 +157,7 @@ export default function UserProfile() {
 
   const handleChange = (event) => {
     const { name, value, type, files } = event.target;
-    if (type === 'file') {
+    if (type === "file") {
       setUser({
         ...user,
         [name]: files[0],
@@ -174,36 +173,32 @@ export default function UserProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append('Username', user.username);
-    formData.append('Email', user.email);
-    formData.append('Password', user.password);
-    formData.append('Name', user.name);
-    formData.append('Phone', user.phone);
-    formData.append('Date_Of_birth', user.date_of_birth);
-    formData.append('Gender', user.gender);
-    formData.append('Image', user.image);
-    formData.append('IsDoctor', user.isDoctor);
+    formData.append("Username", user.username);
+    formData.append("Email", user.email);
+    formData.append("Password", user.password);
+    formData.append("Name", user.name);
+    formData.append("Phone", user.phone);
+    formData.append("Date_Of_birth", user.date_of_birth);
+    formData.append("Gender", user.gender);
+    formData.append("Image", user.image);
+    formData.append("IsDoctor", user.isDoctor);
 
     try {
-      const { data } = await axios.put(
-        'http://154.38.186.138:5000/api/Patients/{id}',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      const { data } = await axios.put("http://154.38.186.138:5000/api/Patients/{id}", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      console.log('Profile updated:', data);
-      router.push('/UserProfile');
+      console.log("Profile updated:", data);
+      router.push("/UserProfile");
     } catch (error) {
       if (error.response) {
-        console.error('Response error:', error.response.data);
+        console.error("Response error:", error.response.data);
       } else if (error.request) {
-        console.error('Request error:', error.request);
+        console.error("Request error:", error.request);
       } else {
-        console.error('Error:', error.message);
+        console.error("Error:", error.message);
       }
     }
   };
@@ -212,41 +207,91 @@ export default function UserProfile() {
     <div className="py-16 bg-gradient-to-t from-customTeal to-customDarkGreen w-full">
       <div className="flex bg-gray-100 rounded-xl shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl justify-center p-4">
         <div className="w-full p-8 lg:w-1/2">
-          <div className='flex justify-center'>
-            <Image src='/logo.png' alt='logo' width={200} height={80} />
+          <div className="flex justify-center">
+            <Image src="/logo.png" alt="logo" width={200} height={80} />
           </div>
           <p className="text-xl text-gray-600 text-center">
-            Update your profile, <span className='text-primary font-bold'>MEDIX</span>!
+            Update your profile, <span className="text-primary font-bold">MEDIX</span>!
           </p>
           <form className="space-y-8" onSubmit={handleSubmit}>
             <div className="mt-4">
               <label className="block text-primary text-sm font-bold mb-2">Username: </label>
-              <input className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" name="username" value={user.username} onChange={handleChange} required />
+              <input
+                className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="text"
+                name="username"
+                value={user.username}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mt-4">
               <label className="block text-primary text-sm font-bold mb-2">Email Address</label>
-              <input className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" name="email" value={user.email} onChange={handleChange} required />
+              <input
+                className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="email"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mt-4">
               <label className="block text-primary text-sm font-bold mb-2">Password</label>
-              <input className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" name="password" value={user.password} onChange={handleChange} required />
+              <input
+                className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="password"
+                name="password"
+                value={user.password}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mt-4">
               <label className="block text-primary text-sm font-bold mb-2">Name</label>
-              <input className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" name="name" value={user.name} onChange={handleChange} required />
+              <input
+                className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="text"
+                name="name"
+                value={user.name}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mt-4">
               <label className="block text-primary text-sm font-bold mb-2">Phone</label>
-              <input className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" name="phone" value={user.phone} onChange={handleChange} required />
+              <input
+                className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="text"
+                name="phone"
+                value={user.phone}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mt-4">
               <label className="block text-primary text-sm font-bold mb-2">Date of Birth</label>
-              <input className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="date" name="date_of_birth" value={user.date_of_birth} onChange={handleChange} required />
+              <input
+                className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="date"
+                name="date_of_birth"
+                value={user.date_of_birth}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mt-4">
               <label className="block text-primary text-sm font-bold mb-2">Gender</label>
-              <select className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" name="gender" value={user.gender} onChange={handleChange} required>
-                <option value="" disabled>Select Gender</option>
+              <select
+                className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                name="gender"
+                value={user.gender}
+                onChange={handleChange}
+                required
+              >
+                <option value="" disabled>
+                  Select Gender
+                </option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
@@ -254,10 +299,20 @@ export default function UserProfile() {
             </div>
             <div className="mt-4">
               <label className="block text-primary text-sm font-bold mb-2">Profile Image</label>
-              <input className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="file" name="image" onChange={handleChange} />
+              <input
+                className="bg-link text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                type="file"
+                name="image"
+                onChange={handleChange}
+              />
             </div>
             <div className="mt-8">
-              <button type="submit" className="bg-secondary text-white font-bold py-2 px-4 w-full rounded hover:bg-primary">Update Profile</button>
+              <button
+                type="submit"
+                className="bg-secondary text-white font-bold py-2 px-4 w-full rounded hover:bg-primary"
+              >
+                Update Profile
+              </button>
             </div>
           </form>
         </div>
