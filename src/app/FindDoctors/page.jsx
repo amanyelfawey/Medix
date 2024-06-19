@@ -1,8 +1,4 @@
 
-
-
-
-
 "use client"
 import Link from 'next/link';
 import { MapPin, Phone, Stethoscope, CircleDollarSign } from 'lucide-react';
@@ -41,7 +37,7 @@ export default function FindDoctor() {
 
   return (
     <div className='container'>
-      <h1 className='text-center font-bold text-3xl m-5 text-primary'>Find The Best Doctor</h1>
+      <h1 className='text-center font-bold text-3xl m-5 text-primary pt-5'>Find The <span className='text-secondary'>Best Doctor</span> </h1>
       <div className='flex justify-center mb-5'>
         <input
           type='text'
