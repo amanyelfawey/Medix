@@ -12,7 +12,6 @@ export async function middleware(req) {
   // Routes
   const signInRoute = "/Signin";
   const signUpRoute = "/Signup";
-  const dashboardRoute = "/dashboard";
 
   const { pathname } = req.nextUrl;
 
@@ -28,7 +27,7 @@ export async function middleware(req) {
 
   // Redirect logged-in users trying to access signin or signup pages
   if (isLoggedIn && (pathname === signInRoute || pathname === signUpRoute)) {
-    return NextResponse.redirect(new URL(dashboardRoute, req.url));
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
