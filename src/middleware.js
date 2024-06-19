@@ -9,37 +9,31 @@ export async function middleware(req) {
   // Check if user is logged in
   const isLoggedIn = userId && userProfile;
 
-  // Routes for signing in and signing up
-  const authRoutes = ["/Signin", "/Signup"];
+  // Routes
+  const signInRoute = "/Signin";
+  const signUpRoute = "/Signup";
+  const dashboardRoute = "/dashboard";
 
-  // Prevent logged-in users from accessing sign-in or sign-up pages
-  if (isLoggedIn && authRoutes.includes(req.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL("/", req.url));
+  const { pathname } = req.nextUrl;
+
+  // Redirect logged-out users trying to access protected routes
+  if (
+    !isLoggedIn &&
+    pathname !== signInRoute &&
+    pathname !== signUpRoute &&
+    pathname.startsWith("/FindDoctors/")
+  ) {
+    return NextResponse.redirect(new URL(signInRoute, req.url));
   }
 
-  if (!isLoggedIn && authRoutes.includes(req.nextUrl.pathname)) {
-    return NextResponse.next();
-  }
-
-  if (!isLoggedIn) {
-    return NextResponse.redirect(new URL("/Signin", req.url));
-  }
-
-  const profileCompleted = req.cookies.get("profileCompleted")?.value === "true";
-
-  // If user is logged in and their profile is complete, redirect to /FindDoctors instead of /profile
-  if (isLoggedIn && profileCompleted && req.nextUrl.pathname === "/profile") {
-    return NextResponse.redirect(new URL("/FindDoctors", req.url));
-  }
-
-  // If user is logged in but their profile is not complete, redirect to /profile
-  if (isLoggedIn && !profileCompleted && req.nextUrl.pathname !== "/profile") {
-    return NextResponse.redirect(new URL("/profile", req.url));
+  // Redirect logged-in users trying to access signin or signup pages
+  if (isLoggedIn && (pathname === signInRoute || pathname === signUpRoute)) {
+    return NextResponse.redirect(new URL(dashboardRoute, req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/FindDoctors", "/profile", "/Signin", "/Signup"],
+  matcher: ["/FindDoctors/:id*", "/Signin", "/Signup"],
 };
