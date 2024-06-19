@@ -16,6 +16,7 @@ export async function middleware(req) {
   const { pathname } = req.nextUrl;
 
   // Redirect logged-out users trying to access protected routes
+
   if (
     !isLoggedIn &&
     pathname !== signInRoute &&
