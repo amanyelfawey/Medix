@@ -11,8 +11,8 @@ export default function Home() {
       {/* {Hero Section} */}
       <Hero />
 
-      {/* Search bar + Categories */}
-      <CategorySearch />
+      
+      
 
       {/* Doctors */}
       <OurDr />

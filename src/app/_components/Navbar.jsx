@@ -89,13 +89,13 @@ function Navbar() {
         <div className="flex items-center justify-between gap-x-8 relative">
           <div>
             <Link href={"/Signup"}>
-              <Button>SignUp</Button>
+              <Button>Sign Up</Button>
             </Link>
           </div>
           <div>
             <Link href={"/Signin"}>
               <Button variant="secondary" className="text-white">
-                SignIn
+                Sign In
               </Button>
             </Link>
           </div>
