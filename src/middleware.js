@@ -12,7 +12,6 @@ export async function middleware(req) {
   // Routes
   const signInRoute = "/Signin";
   const signUpRoute = "/Signup";
-  const dashboardRoute = "/dashboard";
 
 <<<<<<< HEAD
   // Prevent logged-in users from accessing sign-in or sign-up pages
@@ -59,8 +58,12 @@ export async function middleware(req) {
 
   // Redirect logged-in users trying to access signin or signup pages
   if (isLoggedIn && (pathname === signInRoute || pathname === signUpRoute)) {
+<<<<<<< HEAD
     return NextResponse.redirect(new URL(dashboardRoute, req.url));
 >>>>>>> 105a090e7f04c7715980dea24c4d2fb5945c9791
+=======
+    return NextResponse.redirect(new URL("/", req.url));
+>>>>>>> 91e7dc39be88816f2ae5fbf3cfd28a214524695e
   }
 
   return NextResponse.next();
