@@ -80,8 +80,6 @@ function BookAppointment({ doctorId: DocId }) {
     };
 
     try {
-      console.log("doctorId:", doctorId);
-      console.log("patientId:", patientId);
       const response = await axios.post(
         "http://154.38.186.138:5000/api/Appointments",
         appointmentData,
