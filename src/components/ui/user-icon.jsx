@@ -37,8 +37,11 @@ export const UserIcon = ({ user }) => {
             <DropdownMenuContent>
               <DropdownMenuLabel className="text-sm">Account settings</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-sm">
+              <DropdownMenuItem className="text-sm cursor-pointer">
                 <Link href="/profile">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-sm cursor-pointer">
+                <Link href="/MyAppointments">My Appointments</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
