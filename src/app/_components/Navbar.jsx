@@ -19,13 +19,13 @@ function Navbar() {
     {
       id: 1,
       name: "Home",
-      path: "/#home",
+      path: "/",
     },
     {
       id: 2,
 
-      name: "Departments",
-      path: "/#Dep",
+      name: "Medix Ai",
+      path: "/MedixAi",
     },
     {
       id: 3,
@@ -45,7 +45,7 @@ function Navbar() {
     },
     {
       id: 6,
-      name: "Contact",
+      name: "Contact Us",
       path: "/#contact",
     },
   ];

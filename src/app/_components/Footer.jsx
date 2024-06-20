@@ -66,14 +66,14 @@ function Footer() {
           </Link>
         </li>
 
-        <li className=' hover:scale-125 transition-all ease-in-out'>
+         <li className=' hover:scale-125 transition-all ease-in-out'>
           <Link
             className=" text-white hover:text-white/75"
-            href="#dep"
+            href="/FindDoctors"
           >
-            Departments
+            Doctors
           </Link>
-        </li>
+        </li> 
 
         <li className=' hover:scale-125 transition-all ease-in-out'>
           <Link

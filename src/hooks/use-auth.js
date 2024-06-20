@@ -1,4 +1,4 @@
-// NEW
+//NEW
 
 import { create } from "zustand";
 import Cookies from "js-cookie";
@@ -47,3 +47,6 @@ export const useAuth = create((set) => ({
     Cookies.remove("profile");
   },
 }));
+
+
+
