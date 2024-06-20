@@ -41,19 +41,17 @@ const ProfilePage = () => {
 
   const formSchema = z.object({
     name: z.string().min(5, { message: "Name must be at least 5 characters long" }),
-    email: z.string().email(),
+    email: z.string().email({ message: "Invalid email address" }),
     phone: z.string().min(11, { message: "Phone number must be valid" }),
     dateOfBirth: z.coerce.date(),
     gender: z.enum(["male", "female"], { message: "Please select your gender" }),
-    address: z.string().min(5, { message: "Address must be at least 5 characters long" }),
-    speciality: z.optional(
-      z.enum(["Dentist", "Cardiologist", "Psychiatrist", "Dermatologist", "Physiotherapist"])
-    ),
-    wage: z.optional(z.string().min(0, { message: "Wage must be a positive number" })),
-    image: z.any(),
+    wage: z.string().optional(),
+    speciality: z.string().optional(),
+    address: z.string().optional(),
+    image: z.any().optional(),
   });
 
-  const specialties = formSchema.shape.speciality.options;
+  // const specialties = formSchema.shape.speciality.options;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -63,9 +61,9 @@ const ProfilePage = () => {
       phone: "",
       dateOfBirth: "",
       gender: "",
+      wage: "",
       address: "",
       speciality: "",
-      wage: "",
       image: null,
     },
   });
@@ -111,7 +109,7 @@ const ProfilePage = () => {
     formData.append("Email", values.email);
     formData.append("Date_Of_birth", new Date(values.dateOfBirth).toISOString());
     formData.append("Gender", values.gender);
-    formData.append("image", values.image[0]);
+    values.image ? formData.append("image", values.image[0]) : "";
 
     try {
       console.log("Form Data:", id);

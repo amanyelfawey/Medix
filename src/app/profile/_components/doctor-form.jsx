@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Loader, UploadCloudIcon } from "lucide-react";
 
 export const DoctorForm = ({ form, onSubmit, isLoading }) => {
@@ -76,6 +83,26 @@ export const DoctorForm = ({ form, onSubmit, isLoading }) => {
         />
         <FormField
           control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  className="bg-[#D4EDED] focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
+                  placeholder="Address"
+                  {...field}
+                  required
+                />
+              </FormControl>
+              <FormDescription>Please enter your address. </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="dateOfBirth"
           render={({ field }) => (
             <FormItem>
@@ -89,6 +116,41 @@ export const DoctorForm = ({ form, onSubmit, isLoading }) => {
                 />
               </FormControl>
               <FormDescription>Please enter your date of birth.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="speciality"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Speciality</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="bg-[#D4EDED]">
+                    <SelectValue placeholder="Select a speciality." />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent className="bg-[#D4EDED]">
+                  <SelectItem className="bg-[#D4EDED] focus:bg-[hsl(180,66%,80%)]" value="Dentist">
+                    Dentist
+                  </SelectItem>
+                  <SelectItem
+                    className="bg-[#D4EDED] focus:bg-[hsl(180,66%,80%)]"
+                    value="Cardiologist"
+                  >
+                    Cardiologist
+                  </SelectItem>
+                  <SelectItem
+                    className="bg-[#D4EDED] focus:bg-[hsl(180,66%,80%)]"
+                    value="Psychiatrist"
+                  >
+                    Psychiatrist
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>Please select your speciality. </FormDescription>
               <FormMessage />
             </FormItem>
           )}
