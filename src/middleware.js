@@ -10,37 +10,41 @@ export async function middleware(req) {
   // Routes
   const signInRoute = "/Signin";
   const signUpRoute = "/Signup";
+  const profileRoute = "/profile";
+  const userProfileRoute = "/UserProfile";
+  const findDoctorsRoute = "/FindDoctors/";
 
   const { pathname } = req.nextUrl;
 
   // Redirect logged-out users trying to access protected routes
+  if (!isLoggedIn) {
+    if (
+      pathname.startsWith(findDoctorsRoute) ||
+      pathname.startsWith(profileRoute) ||
+      pathname.startsWith(userProfileRoute)
+    ) {
+      return NextResponse.redirect(new URL(signInRoute, req.url));
+    }
+  } else {
+    // Redirect logged-in users trying to access signin or signup pages
+    if (pathname === signInRoute || pathname === signUpRoute) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
 
-  if (
-    !isLoggedIn &&
-    pathname !== signInRoute &&
-    pathname !== signUpRoute &&
-    pathname.startsWith("/FindDoctors/")
-  ) {
-    return NextResponse.redirect(new URL(signInRoute, req.url));
-  }
+    // Redirect to profile completion if profile is not completed
+    if (isProfileCompleted.value === "false" && pathname.startsWith(findDoctorsRoute)) {
+      return NextResponse.redirect(new URL(profileRoute, req.url));
+    }
 
-  // Redirect logged-in users trying to access signin or signup pages
-  if (isLoggedIn && (pathname === signInRoute || pathname === signUpRoute)) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  console.log(isProfileCompleted);
-
-  if (isProfileCompleted.value == "false" && pathname.startsWith("/FindDoctors/")) {
-    return NextResponse.redirect(new URL("/profile", req.url));
-  }
-  if (isProfileCompleted.value == "true" && pathname.startsWith("/profile")) {
-    return NextResponse.redirect(new URL("/FindDoctors", req.url));
+    // Redirect from profile page if profile is completed
+    if (isProfileCompleted.value === "true" && pathname.startsWith(profileRoute)) {
+      return NextResponse.redirect(new URL(findDoctorsRoute, req.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/FindDoctors/:id*", "/Signin", "/Signup", "/profile"],
+  matcher: ["/FindDoctors/:id*", "/Signin", "/Signup", "/profile", "/UserProfile"],
 };
