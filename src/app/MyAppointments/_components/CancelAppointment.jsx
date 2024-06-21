@@ -34,7 +34,6 @@ const CancelAppointment = ({ appointmentId }) => {
       toast.success("Appointment deleted successfully!");
     } catch (error) {
       console.error("Error deleting appointment:", error);
-
       toast.error(`Error deleting appointment: ${error.message}`);
     }
   };
