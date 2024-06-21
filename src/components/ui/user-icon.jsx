@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./avatar";
 import {
@@ -10,15 +12,25 @@ import {
 } from "./dropdown-menu";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export const UserIcon = ({ user }) => {
+export const UserIcon = () => {
   const { logout } = useAuth();
   const router = useRouter();
-
+  const initialize = useAuth((state) => state.initialize);
+  const { setUser, id, user } = useAuth((state) => ({
+    setUser: state.setUser,
+    id: state.id,
+    user: state.user,
+  }));
   const handleLogout = async () => {
     await logout();
     router.push("/");
   };
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
   return (
     <>
@@ -27,11 +39,7 @@ export const UserIcon = ({ user }) => {
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger>
               <Avatar className="flex justify-center items-center font-bold">
-                <AvatarFallback>
-                  {user.patient_name
-                    ? user.patient_name.slice(0, 2).toUpperCase()
-                    : user.doctor_name.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
+                <AvatarFallback>{user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

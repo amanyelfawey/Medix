@@ -23,16 +23,20 @@ const formSchema = z.object({
   email: z.string().email(),
   phone: z.string().min(11),
   address: z.string().min(5),
+  wage: z.string().min(1),
+  speciality: z.string().min(3),
 });
 
 export const EditProfilePage = ({ user, profileType }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: user[`${profileType}_name`],
-      email: user[`${profileType}_email`],
-      phone: user[`${profileType}_phone`],
-      address: user[`${profileType}_address`],
+      name: user[`name`],
+      email: user[`email`],
+      phone: user[`phone`],
+      address: user[`address`],
+      wage: user[`wage`],
+      speciality: user[`speciality`],
     },
   });
 
@@ -59,19 +63,44 @@ export const EditProfilePage = ({ user, profileType }) => {
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            className="read-only:bg-gray-400/20 focus-visible:ring-0 cursor-not-allowed focus-visible:ring-opacity"
+                            placeholder="Name"
+                            readonly="readonly"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="speciality"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>speciality</FormLabel>
+                        <FormControl>
+                          <Input
+                            className="read-only:bg-gray-400/20 focus-visible:ring-0 cursor-not-allowed focus-visible:ring-opacity"
+                            placeholder="speciality"
+                            readonly="readonly"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <FormField
                   control={form.control}
                   name="email"
@@ -111,6 +140,19 @@ export const EditProfilePage = ({ user, profileType }) => {
                       <FormLabel>Address</FormLabel>
                       <FormControl>
                         <Input placeholder="Address" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="wage"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Wage</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Wage" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

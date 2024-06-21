@@ -2,38 +2,28 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { Loader, UploadCloudIcon } from "lucide-react";
 import Cookies from "js-cookie";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { UserForm } from "./_components/user-form";
 import { DoctorForm } from "./_components/doctor-form";
 
 const ProfilePage = () => {
-  const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(false);
-
+  const router = useRouter();
   const initializeAuth = useAuth((state) => state.initialize);
-  const { setUser, id, user } = useAuth.getState();
+
+  const { setUser, id, user } = useAuth((state) => ({
+    setUser: state.setUser,
+    id: state.id,
+    user: state.user,
+  }));
 
   const [profileType, setProfileType] = useState(null);
   const [name, setName] = useState("");
@@ -70,23 +60,13 @@ const ProfilePage = () => {
 
   useEffect(() => {
     initializeAuth();
-  }, []);
+  }, [initializeAuth]);
 
   useEffect(() => {
     if (!user) return;
-    setProfileType(user.profileType);
+    setName(user.name);
+    setEmail(user.email);
   }, [user]);
-
-  useEffect(() => {
-    if (!profileType) return;
-    if (profileType === "Doctor") {
-      setName(user.doctor_name);
-      setEmail(user.doctor_email);
-    } else if (profileType === "Patient") {
-      setName(user.patient_name);
-      setEmail(user.patient_email);
-    }
-  }, [profileType]);
 
   useEffect(() => {
     form.reset({
@@ -99,7 +79,7 @@ const ProfilePage = () => {
       address: "",
       image: null,
     });
-  }, [name, email, form]);
+  }, [name, email, form]); // Added 'form' to the dependency array
 
   async function onUserSubmit(values) {
     setIsLoading(true);
@@ -148,7 +128,7 @@ const ProfilePage = () => {
     formData.append("Speciality", values.speciality);
     formData.append("Date_Of_birth", new Date(values.dateOfBirth).toISOString());
     formData.append("Gender", values.gender);
-    formData.append("image", values.image[0]);
+    values.image ? formData.append("image", values.image[0]) : "";
 
     try {
       console.log("Form Data:", id);
@@ -159,15 +139,16 @@ const ProfilePage = () => {
         },
       });
 
-      console.log("Response:", response.data);
       toast.success("Profile updated successfully.");
-      const updatedUser = {
+      const updatedUser = await {
         ...user,
         ...response.data,
       };
 
-      setUser(updatedUser);
+      await setUser(updatedUser);
+
       Cookies.set("profileCompleted", true);
+      return router.refresh();
     } catch (error) {
       console.error("Error:", error);
       toast.error("An error occurred. Please try again.");

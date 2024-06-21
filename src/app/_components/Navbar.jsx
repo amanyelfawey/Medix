@@ -12,7 +12,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserIcon } from "@/components/ui/user-icon";
 
 function Navbar() {
-  const { user, initialize } = useAuth();
+  const initialize = useAuth((state) => state.initialize);
+  const { setUser, id, user } = useAuth((state) => ({
+    setUser: state.setUser,
+    id: state.id,
+    user: state.user,
+  }));
   const [isMounted, setIsMounted] = useState(false);
 
   const Menu = [
@@ -52,10 +57,11 @@ function Navbar() {
 
   useEffect(() => {
     initialize();
-  }, []);
+  }, [initialize]);
+
   useEffect(() => {
     setIsMounted(true);
-  });
+  }, []);
 
   if (!isMounted) return null;
   return (
@@ -101,7 +107,7 @@ function Navbar() {
           </div>
         </div>
       )}
-      {user && <UserIcon user={user} />}
+      {user && <UserIcon />}
     </nav>
   );
 }

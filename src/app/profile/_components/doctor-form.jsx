@@ -157,6 +157,26 @@ export const DoctorForm = ({ form, onSubmit, isLoading }) => {
         />
         <FormField
           control={form.control}
+          name="wage"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Wage</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  className="bg-[#D4EDED] focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
+                  placeholder="Wage"
+                  required="required"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>Please enter your wage.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="gender"
           render={({ field }) => (
             <FormItem>
