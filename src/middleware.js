@@ -31,8 +31,11 @@ export async function middleware(req) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    // Redirect to profile completion if profile is not completed
+    if (pathname == userProfileRoute && isProfileCompleted.value === "false") {
+      return NextResponse.redirect(new URL(profileRoute, req.url));
+    }
     if (isProfileCompleted.value === "false" && pathname.startsWith(findDoctorsRoute)) {
+      // Redirect to profile completion if profile is not completed
       return NextResponse.redirect(new URL(profileRoute, req.url));
     }
 

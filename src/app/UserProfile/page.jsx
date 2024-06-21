@@ -1,25 +1,25 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditProfilePage } from "./_components/edit-profile-form";
 
 export default function UserProfilePage() {
-  const { user } = useAuth();
-  const [profileType, setProfileType] = useState(user?.profileType?.toLowerCase());
+  const { user, id } = useAuth();
+  const [isDoctor, setIsDoctor] = useState(false);
 
   useEffect(() => {
     if (!user) {
       return;
+    } else {
+      setIsDoctor(user.profileType == "Doctor" ? true : false);
     }
-    setProfileType(user.profileType.toLowerCase());
   }, [user]);
 
   return (
     <>
       <div className="min-h-[85vh]">
-        {user && profileType && <EditProfilePage user={user} profileType={profileType} />}
+        {user && id && <EditProfilePage user={user} id={id} isDoctor={isDoctor} />}
       </div>
     </>
   );

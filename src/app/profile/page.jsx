@@ -26,7 +26,6 @@ const ProfilePage = () => {
   }));
 
   const [profileType, setProfileType] = useState(null);
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   const formSchema = z.object({
@@ -64,13 +63,13 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (!user) return;
-    setName(user.name);
     setEmail(user.email);
+    setProfileType(user.profileType);
   }, [user]);
 
   useEffect(() => {
     form.reset({
-      name,
+      name: "",
       email,
       phone: "",
       dateOfBirth: "",
@@ -79,7 +78,7 @@ const ProfilePage = () => {
       address: "",
       image: null,
     });
-  }, [name, email, form]); // Added 'form' to the dependency array
+  }, [email, form]); // Added 'form' to the dependency array
 
   async function onUserSubmit(values) {
     setIsLoading(true);
@@ -92,7 +91,6 @@ const ProfilePage = () => {
     values.image ? formData.append("image", values.image[0]) : "";
 
     try {
-      console.log("Form Data:", id);
       const response = await axios.put(`http://154.38.186.138:5000/api/Patients/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -100,7 +98,6 @@ const ProfilePage = () => {
         },
       });
 
-      console.log("Response:", response.data);
       toast.success("Profile updated successfully.");
       const updatedUser = {
         ...user,
@@ -131,7 +128,6 @@ const ProfilePage = () => {
     values.image ? formData.append("image", values.image[0]) : "";
 
     try {
-      console.log("Form Data:", id);
       const response = await axios.put(`http://154.38.186.138:5000/api/Doctors/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",

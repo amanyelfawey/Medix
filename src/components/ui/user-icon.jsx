@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Avatar, AvatarFallback } from "./avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,7 +31,7 @@ export const UserIcon = () => {
   useEffect(() => {
     initialize();
   }, [initialize]);
-
+  const isDoctor = user?.profileType.toLowerCase() == "doctor";
   return (
     <>
       <div className="flex items-center justify-between gap-x-8 relative">
@@ -40,13 +40,14 @@ export const UserIcon = () => {
             <DropdownMenuTrigger>
               <Avatar className="flex justify-center items-center font-bold">
                 <AvatarFallback>{user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+                <AvatarImage src={isDoctor ? user?.image : "/patient.svg"} alt={user?.name} />
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel className="text-sm">Account settings</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-sm cursor-pointer">
-                <Link href="/profile">Profile</Link>
+                <Link href="/UserProfile">Profile</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="text-sm cursor-pointer">
                 <Link href="/MyAppointments">My Appointments</Link>
@@ -56,7 +57,7 @@ export const UserIcon = () => {
                 onClick={() => {
                   handleLogout();
                 }}
-                className="text-sm"
+                className="text-sm cursor-pointer"
               >
                 <Link href="/profile">Logout</Link>
               </DropdownMenuItem>

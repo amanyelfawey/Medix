@@ -31,8 +31,7 @@ export const DoctorForm = ({ form, onSubmit, isLoading }) => {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input
-                  readOnly
-                  className="bg-[#D4EDED] read-only:cursor-not-allowed focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
+                  className="bg-[#D4EDED]  focus-visible:ring-offset-0 border-0 focus-visible:ring-0"
                   placeholder="Name"
                   {...field}
                 />
