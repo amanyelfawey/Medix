@@ -1,11 +1,20 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { MapPin, Stethoscope, CircleDollarSign, Calendar, Clock } from "lucide-react";
+import {
+  MapPin,
+  Stethoscope,
+  CircleDollarSign,
+  Calendar,
+  Clock,
+  CircleFadingPlus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import CancelAppointment from "./_components/CancelAppointment";
+import { useRouter } from "next/navigation";
 
 export default function Appointments() {
+  const router = useRouter();
   const { id, user, initialize } = useAuth();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -123,11 +132,31 @@ export default function Appointments() {
                 <Clock />
                 <span className="text-gray-700">{appointment.time || "Unknown"}</span>
               </h2>
-              <CancelAppointment appointmentId={appointment.appointment_id} />{" "}
-              {/* Pass appointment ID */}
+              <CancelAppointment
+                appointmentId={appointment.appointment_id}
+                fetchAppointments={fetchAppointments}
+                id={id}
+              />{" "}
             </div>
           </div>
         ))}
+        {!appointments.length && (
+          <>
+            <div className="flex flex-col gap-4 justify-center items-center min-h-[50vh]">
+              <CircleFadingPlus className="w-20 h-20 text-primary" />
+              <p>
+                You have no appointments scheduled. <br />
+              </p>
+              <Button
+                onClick={() => {
+                  return router.push("/FindDoctors");
+                }}
+              >
+                Book an appointment
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

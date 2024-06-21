@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 
-const CancelAppointment = ({ appointmentId }) => {
+const CancelAppointment = ({ appointmentId, fetchAppointments, id }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleDelete = async () => {
@@ -32,6 +32,7 @@ const CancelAppointment = ({ appointmentId }) => {
       // Handle success, e.g., close dialog, update state, etc.
       setIsOpen(false); // Close the dialog after successful deletion
       toast.success("Appointment deleted successfully!");
+      fetchAppointments(id);
     } catch (error) {
       console.error("Error deleting appointment:", error);
       toast.error(`Error deleting appointment: ${error.message}`);
