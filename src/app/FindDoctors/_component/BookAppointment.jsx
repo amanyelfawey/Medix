@@ -76,7 +76,12 @@ function BookAppointment({ doctorId: DocId }) {
       return success;
     } catch (error) {
       console.error("Error checking availability:", error);
-      return false;
+      if (error.response.data.title == "Not Found") {
+        console.log("Entered");
+        return true;
+      } else {
+        return false;
+      }
     }
   };
 
@@ -102,7 +107,9 @@ function BookAppointment({ doctorId: DocId }) {
       Minute: minute,
     };
     const dateStr = await `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    const timeStr = await `${hour}:${minute}:00`;
+    const timeStr = await `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}:00`;
 
     if (await checkAvailability(dateStr, timeStr)) {
       console.log("Success");

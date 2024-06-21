@@ -1,8 +1,6 @@
+"use client";
 
-
-"use client"
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,26 +11,31 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 const CancelAppointment = ({ appointmentId }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`http://154.38.186.138:5000/api/Appointments/delete?appointment_id=${appointmentId}`, {
-        method: 'DELETE',
-      });
+      const res = await fetch(
+        `http://154.38.186.138:5000/api/Appointments/delete?appointment_id=${appointmentId}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!res.ok) {
         throw new Error(`Error deleting appointment: ${res.statusText}`);
       }
       // Handle success, e.g., close dialog, update state, etc.
       setIsOpen(false); // Close the dialog after successful deletion
-      alert('Appointment deleted successfully!'); // Example: Show an alert
+      toast.success("Appointment deleted successfully!");
     } catch (error) {
-      console.error('Error deleting appointment:', error);
-      alert(`Error deleting appointment: ${error.message}`); // Example: Show an alert with error message
+      console.error("Error deleting appointment:", error);
+
+      toast.error(`Error deleting appointment: ${error.message}`);
     }
   };
 
@@ -47,13 +50,11 @@ const CancelAppointment = ({ appointmentId }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-           Are you sure you want to cancel this appointment?
+            Are you sure you want to cancel this appointment?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setIsOpen(false)}>
-            No
-          </AlertDialogCancel>
+          <AlertDialogCancel onClick={() => setIsOpen(false)}>No</AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete} autoFocus>
             Yes
           </AlertDialogAction>
@@ -64,4 +65,3 @@ const CancelAppointment = ({ appointmentId }) => {
 };
 
 export default CancelAppointment;
-
