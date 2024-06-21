@@ -57,6 +57,27 @@ function BookAppointment({ doctorId: DocId }) {
     setTimeSlot(timeList);
   };
 
+  const checkAvailability = async (selectedDate, selectedTime) => {
+    if (!selectedDate || !selectedTime) {
+      return;
+    }
+
+    try {
+      const { data } = await axios.get(
+        `http://154.38.186.138:5000/api/Appointments/doctor?doctor_id=3`
+      );
+      const avb = data.find(
+        (appointment) => appointment.date == "2024-06-21" && appointment.time == selectedTime
+      );
+      console.log(selectedTime);
+      console.log(avb);
+      console.log(avb ? false : true);
+    } catch (error) {
+      console.error("Error checking availability:", error);
+    }
+    return false;
+  };
+
   const handleSubmit = async () => {
     if (!date || !selectedTime) {
       setAlert({ show: true, type: "error", message: "Please select a date and time." });
@@ -78,6 +99,14 @@ function BookAppointment({ doctorId: DocId }) {
       Hour: hour,
       Minute: minute,
     };
+    const dateStr = await `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    const timeStr = await `${hour}:${minute}:00`;
+
+    if (!(await checkAvailability(dateStr, timeStr))) {
+      setAlert({ show: true, type: "error", message: "Appointment is already book at this time." });
+      setShowDialog(false);
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -91,7 +120,7 @@ function BookAppointment({ doctorId: DocId }) {
       );
       if (response.status === 200) {
         setAlert({ show: true, type: "success", message: "Appointment booked successfully!" });
-        setShowDialog(false); // Close the dialog
+        setShowDialog(false);
       } else {
         setAlert({ show: true, type: "error", message: "Failed to book appointment." });
         setShowDialog(false);
@@ -118,7 +147,6 @@ function BookAppointment({ doctorId: DocId }) {
             <DialogDescription>
               <div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Calendar */}
                   <div className="flex flex-col items-baseline gap-3">
                     <h2 className="flex text-secondary">
                       <CalendarDays />
@@ -136,7 +164,6 @@ function BookAppointment({ doctorId: DocId }) {
                   <div className="flex flex-col items-baseline gap-3">
                     <div className="flex">
                       <h2 className="text-secondary text-lg mb-2 flex">
-                        {" "}
                         <Clock3 />
                         <span className="text-gray-700 px-2 text-lg">Select Time </span>
                       </h2>
@@ -180,8 +207,6 @@ function BookAppointment({ doctorId: DocId }) {
 }
 
 export default BookAppointment;
-
-
 
 // import React, { useEffect, useState } from "react";
 // import { Button } from "@/components/ui/button";
@@ -405,7 +430,3 @@ export default BookAppointment;
 // }
 
 // export default BookAppointment;
-
-
-
-
