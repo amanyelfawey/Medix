@@ -64,7 +64,7 @@ function BookAppointment({ doctorId: DocId }) {
 
     try {
       const { data } = await axios.get(
-        `http://154.38.186.138:5000/api/Appointments/doctor?doctor_id=3`
+        `http://154.38.186.138:5000/api/Appointments/doctor?doctor_id=${doctorId}`
       );
       const avb = data.find(
         (appointment) => appointment.date == "2024-06-21" && appointment.time == selectedTime
@@ -72,10 +72,12 @@ function BookAppointment({ doctorId: DocId }) {
       console.log(selectedTime);
       console.log(avb);
       console.log(avb ? false : true);
+      const success = avb ? false : true;
+      return success;
     } catch (error) {
       console.error("Error checking availability:", error);
+      return false;
     }
-    return false;
   };
 
   const handleSubmit = async () => {
@@ -102,7 +104,9 @@ function BookAppointment({ doctorId: DocId }) {
     const dateStr = await `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     const timeStr = await `${hour}:${minute}:00`;
 
-    if (!(await checkAvailability(dateStr, timeStr))) {
+    if (await checkAvailability(dateStr, timeStr)) {
+      console.log("Success");
+    } else {
       setAlert({ show: true, type: "error", message: "Appointment is already book at this time." });
       setShowDialog(false);
       return;
