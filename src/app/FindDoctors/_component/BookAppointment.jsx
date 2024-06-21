@@ -69,15 +69,11 @@ function BookAppointment({ doctorId: DocId }) {
       const avb = data.find(
         (appointment) => appointment.date == "2024-06-21" && appointment.time == selectedTime
       );
-      console.log(selectedTime);
-      console.log(avb);
-      console.log(avb ? false : true);
       const success = avb ? false : true;
       return success;
     } catch (error) {
       console.error("Error checking availability:", error);
       if (error.response.data.title == "Not Found") {
-        console.log("Entered");
         return true;
       } else {
         return false;
@@ -112,7 +108,6 @@ function BookAppointment({ doctorId: DocId }) {
       .padStart(2, "0")}:00`;
 
     if (await checkAvailability(dateStr, timeStr)) {
-      console.log("Success");
     } else {
       setAlert({ show: true, type: "error", message: "Appointment is already book at this time." });
       setShowDialog(false);
