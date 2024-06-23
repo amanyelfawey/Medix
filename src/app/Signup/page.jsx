@@ -141,7 +141,7 @@ export default function Register() {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>Please chose a strong password.</FormDescription>
+                    <FormDescription>Please choose a strong password.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

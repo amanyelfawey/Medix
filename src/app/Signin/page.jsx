@@ -138,11 +138,14 @@ export default function Login() {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>Please chose a strong password.</FormDescription>
+                    <FormDescription>Please choose a strong password.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              <Link href={"/Signin/ForgetPassword"} className="text-xs text-primary mt-5">
+                Forget your Password?
+            </Link>
 
               <Button disabled={isLoading} type="submit" className="w-full text-xl">
                 {!isLoading ? "Login" : <Loader className="w-4 h-4 animate-spin" />}
