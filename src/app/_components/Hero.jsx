@@ -27,9 +27,9 @@ function Hero() {
                 </h2>
 
                 <p className="mt-6 mb-8 text-gray-600 text-2xl">we are here for your care.</p>
-                <Link href={"http://localhost:3000/Signup"}>
+                <Link href={"http://localhost:3000/FindDoctors"}>
                   <Button className="  rounded bg-secondary px-12 my-12 text-lg font-light   text-white transition hover:bg-primary focus:outline-none focus:ring focus:ring-primary">
-                    Get Started
+                    Get Appointment
                   </Button>
                 </Link>
               </div>
