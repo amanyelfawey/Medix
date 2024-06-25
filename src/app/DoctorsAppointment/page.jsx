@@ -69,7 +69,7 @@ export default function DoctorAppointments() {
                 <img
                   src={appointment.patient_image}
                   alt="Patient"
-                  className="rounded-lg w-40 h-40 object-cover"
+                  className="rounded-lg w-[150px] h-full object-cover"
                 />
               )}
               <div className="flex flex-col gap-3">
